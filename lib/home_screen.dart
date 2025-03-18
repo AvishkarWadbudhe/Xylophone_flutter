@@ -29,25 +29,23 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Column(
-        children:
-            button
-                .map(
-                  (button) => xylophoneButton(
-                    color: button.color,
-                    onPressed: () async {
-                      await _player.play(
-                        AssetSource('assets/${button.audioName}.wav'),
-                      );
-                    },
-                  ),
-                )
-                .toList(),
+        children: button
+            .map(
+              (button) => xylophoneButton(
+                color: button.color,
+                onPressed: () async {
+                  await _player.setSource(
+                      AssetSource('${button.audioName}.wav')); // Preload sound
+                  await _player.resume(); // Play instantly
+                },
+              ),
+            )
+            .toList(),
       ),
     );
   }
 }
 
-// ignore: camel_case_types
 class xylophoneButton extends StatelessWidget {
   const xylophoneButton({
     super.key,
@@ -66,7 +64,7 @@ class xylophoneButton extends StatelessWidget {
           child: Container(
             height: 200,
             width: double.infinity,
-            color: Colors.amber,
+            color: color,
           ),
         ),
       ),
